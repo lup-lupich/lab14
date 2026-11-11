@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <locale.h>
+#include <math.h>
 
 void task1(double* ptr_array, int size);
 double* full_elements(double* ptr_array, int n);
@@ -10,6 +11,8 @@ double* calc_elements(double* ptr_array, int n);
 void task2(double* ptr_array, int size);
 double sum_elements(double* ptr_array, int begin, int end);
 int find_element(double* ptr_array, int n, double element);
+void task3(double* ptr_array, int size);
+int function(double* ptr_array, int n, int k);
 
 int main(void) {
 
@@ -17,13 +20,28 @@ int main(void) {
 
 	double array[N];
 	int size;
+	int user_choise, stop;
 
 	printf("Введите размер массива (до %d): ", N);
 	scanf("%d", &size);
 	printf("\n");
 
-	task1(array, size);
-	task2(array, size);
+	do {
+		printf("Выберите задание: ");
+		scanf("%d", &user_choise);
+		printf("\n");
+
+		switch (user_choise) {
+		case 1: task1(array, size); break;
+		case 2: task2(array, size); break;
+		case 3: task3(array, size); break;
+		}
+
+		printf("Продолжить? (любая цифра - да, 0 - нет): ");
+		scanf("%d", &stop);
+		printf("\n");
+	} 
+	while (stop != 0);
 
 	return 0;
 }
@@ -105,4 +123,35 @@ int find_element(double* ptr_array, int n, double element) {
 	}
 
 	return -1;
+}
+
+void task3(double* ptr_array, int size) {
+
+	int k;
+
+	printf("Введите число k: ");
+	scanf("%d", &k);
+	printf("\n");
+
+	printf("Порядковый номер минимального значения элементов, кратных k: %d", function(ptr_array, size, k));
+}
+
+int function(double* ptr_array, int n, int k) {
+
+	double minimum = 100000;
+	int serial_number = -1;
+
+	for (int i = 0; i < n; i++) {
+
+		if (fmod(*(ptr_array + i), k) == 0) {
+
+			if (*(ptr_array + i) < minimum) {
+
+				minimum = *(ptr_array + i);
+				serial_number = i + 1;
+			}
+		}
+	}
+
+	return serial_number;
 }
